@@ -139,32 +139,21 @@
         .light-mode h1, .light-mode h2 {
             color: #357ca5;
         }
-        .hidden-content {
-            display: none;
-        }
-        .visible {
-            display: block;
-        }
     </style>
     <script>
         function checkLogin() {
             var username = document.getElementById("username").value.toLowerCase();
             var password = document.getElementById("password").value;
             var errorMessage = document.getElementById("error-message");
-
             if (username === "nikeit" && password === "1234") {
-                document.getElementById("login-form").style.display = "none";
-                document.getElementById("main-content").classList.add("visible");
-                errorMessage.style.display = "none";
+                window.location.href = "data.php";
             } else {
                 errorMessage.style.display = "block";
             }
         }
-
         function toggleTheme() {
             document.body.classList.toggle("light-mode");
         }
-
         function toggleSettings() {
             var themeContainer = document.getElementById("themeContainer");
             if (themeContainer.style.display === "none" || themeContainer.style.display === "") {
@@ -173,14 +162,13 @@
                 themeContainer.style.display = "none";
             }
         }
-
-        document.addEventListener("DOMContentLoaded", function () {
-            document.getElementById("password").addEventListener("keypress", function (event) {
+        document.addEventListener("DOMContentLoaded", function() {
+            document.getElementById("password").addEventListener("keypress", function(event) {
                 if (event.key === "Enter") {
                     checkLogin();
                 }
             });
-            document.getElementById("username").addEventListener("keypress", function (event) {
+            document.getElementById("username").addEventListener("keypress", function(event) {
                 if (event.key === "Enter") {
                     checkLogin();
                 }
@@ -197,7 +185,7 @@
             </div>
         </div>
         <h2>Crackz</h2>
-        <div id="login-form" class="login-input">
+        <div class="login-input">
             <input type="text" id="username" placeholder="Username">
             <input type="password" id="password" placeholder="Password">
             <button onclick="checkLogin()">Login</button>
@@ -206,22 +194,11 @@
         <a href="#home">Startseite</a>
         <a href="#about">Über uns</a>
     </div>
-
-    <div class="content hidden-content" id="main-content">
-        <h1 id="home">Willkommen auf unserer Plattform</h1>
-        <p>
-            Schön, dass du da bist! Diese Website ist dein Einstiegspunkt in die Welt von <strong>Crackz</strong> – unser Ort für Projekte,
-            Ideen und eine kreative Community. Aktuell arbeiten wir an verschiedenen Tools, mit denen du deine Ideen zum Leben erwecken kannst.
-        </p>
-        <img src="https://via.placeholder.com/600x300.png?text=Willkommen+bei+Crackz" alt="Beispielbild">
-
+    <div class="content">
+        <h1 id="home">Willkommen auf meiner Website</h1>
+        <img src="bild.jpg" alt="Beispielbild">
         <h2 id="about">Über uns</h2>
-        <p>
-            Wir sind ein kleines Team aus kreativen Köpfen, die Spaß daran haben, Dinge zu bauen. Egal ob Websites, Spiele, Tools oder Mods –
-            unser Fokus liegt auf Einfachheit, Stil und Funktionalität. Wenn du Teil davon werden möchtest, melde dich bei uns oder bleib einfach am Ball.
-        </p>
-
-        <p><em>Bleib neugierig – mehr Inhalte folgen bald!</em></p>
+        <p>Hier ist eine kurze Beschreibung über unser Projekt.</p>
     </div>
 </body>
 </html>
