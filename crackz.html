@@ -7,67 +7,120 @@
     <style>
         body {
             margin: 0;
-            font-family: 'Poppins', sans-serif;
+            font-family: Arial, sans-serif;
             display: flex;
             background-color: #0a0f1a;
             color: #ffffff;
             transition: background-color 0.3s, color 0.3s;
         }
         .sidebar {
-            width: 200px;
+            width: 250px;
             height: 100vh;
             background-color: #1c2333;
             color: white;
             position: fixed;
-            padding: 15px;
+            padding: 20px;
             box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
         }
         .sidebar h2 {
             color: #4da8da;
-            font-size: 18px;
         }
-        .sidebar a, .sidebar button {
-            width: 90%;
-            padding: 6px;
-            background-color: #1c2333;
-            border: 2px solid #4da8da;
+        .sidebar a {
+            color: #ffffff;
+            text-decoration: none;
+            display: block;
+            padding: 10px 0;
+            transition: 0.3s;
+        }
+        .sidebar a:hover {
+            color: #4da8da;
+        }
+        .login-input {
+            margin-bottom: 20px;
+        }
+        .login-input input {
+            width: 100%;
+            padding: 8px;
+            border: none;
+            border-radius: 5px;
+            outline: none;
+            margin-bottom: 10px;
+        }
+        .login-input button {
+            width: 100%;
+            padding: 8px;
+            background-color: #4da8da;
+            border: none;
             border-radius: 5px;
             color: white;
             cursor: pointer;
             transition: 0.3s;
-            display: block;
-            text-align: center;
-            font-size: 12px;
-            margin-bottom: 6px;
-            text-decoration: none;
-            margin-left: auto;
-            margin-right: auto;
         }
-        .sidebar a:hover, .sidebar button:hover {
-            background-color: #4da8da;
-            color: #1c2333;
+        .login-input button:hover {
+            background-color: #357ca5;
+        }
+        .error-message {
+            color: red;
+            display: none;
+            font-size: 12px;
+            margin-top: 5px;
         }
         .settings {
-            margin-top: 12px;
-            padding-top: 6px;
+            margin-top: 20px;
+            padding-top: 10px;
             border-top: 1px solid #4da8da;
             position: relative;
         }
-        .theme-container, .login-container {
+        .settings-button {
+            width: 100%;
+            padding: 8px;
+            background-color: #4da8da;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .settings-button:hover {
+            background-color: #357ca5;
+        }
+        .theme-container {
             display: none;
             background: #1c2333;
-            padding: 6px;
+            padding: 10px;
             border-radius: 5px;
             box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
-            margin-top: 6px;
+            white-space: nowrap;
+            margin-top: 10px;
+        }
+        .theme-toggle {
+            padding: 8px 12px;
+            background-color: #4da8da;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .theme-toggle:hover {
+            background-color: #357ca5;
         }
         .content {
-            margin-left: 220px;
+            margin-left: 300px;
             padding: 20px;
-            background: none;
         }
         h1, h2 {
             color: #4da8da;
+        }
+        img {
+            width: 100%;
+            max-width: 600px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+        }
+        p {
+            font-size: 18px;
+            line-height: 1.6;
         }
         .light-mode {
             background-color: #ffffff;
@@ -77,56 +130,20 @@
             background-color: #f0f0f0;
             color: #000000;
         }
-        .light-mode .sidebar a, .light-mode .sidebar button {
+        .light-mode .sidebar a {
             color: #000000;
-            background-color: #f0f0f0;
         }
-        .light-mode .sidebar a:hover, .light-mode .sidebar button:hover {
-            background-color: #4da8da;
-            color: #ffffff;
+        .light-mode .sidebar a:hover {
+            color: #357ca5;
         }
         .light-mode h1, .light-mode h2 {
             color: #357ca5;
         }
-        .error-message {
-            color: red;
+        .hidden-content {
             display: none;
-            font-size: 10px;
-            margin-top: 3px;
         }
-        .login-container input {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 2px solid #4da8da;
-            border-radius: 8px;
-            background-color: #2c3440;
-            color: #ffffff;
-            font-size: 14px;
-            outline: none;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-            transition: border 0.3s, box-shadow 0.3s;
-        }
-        .login-container input:focus {
-            border-color: #4da8da;
-            box-shadow: 0 0 8px rgba(77, 168, 218, 0.5);
-        }
-        .login-container button {
-            width: 100%;
-            padding: 10px;
-            background-color: #4da8da;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        .login-container button:hover {
-            background-color: #357ca5;
-        }
-        #bewerbungen {
-            display: none;
+        .visible {
+            display: block;
         }
     </style>
     <script>
@@ -134,58 +151,63 @@
             var username = document.getElementById("username").value.toLowerCase();
             var password = document.getElementById("password").value;
             var errorMessage = document.getElementById("error-message");
-            if ((username === "nikeit" && password === "1234") || (username === "hitfish" && password === "kakaaa123!")) {
-                document.getElementById("bewerbungen").style.display = "block";
+
+            if (username === "nikeit" && password === "1234") {
+                document.getElementById("login-form").style.display = "none";
+                document.getElementById("main-content").classList.add("visible");
+                errorMessage.style.display = "none";
             } else {
                 errorMessage.style.display = "block";
             }
         }
+
         function toggleTheme() {
             document.body.classList.toggle("light-mode");
         }
+
         function toggleSettings() {
             var themeContainer = document.getElementById("themeContainer");
-            var loginButton = document.getElementById("loginButton");
             if (themeContainer.style.display === "none" || themeContainer.style.display === "") {
                 themeContainer.style.display = "block";
-                loginButton.style.display = "block";
             } else {
                 themeContainer.style.display = "none";
-                loginButton.style.display = "none";
-                document.getElementById("loginContainer").style.display = "none";
             }
         }
-        function toggleLogin() {
-            var loginContainer = document.getElementById("loginContainer");
-            if (loginContainer.style.display === "none" || loginContainer.style.display === "") {
-                loginContainer.style.display = "block";
-            } else {
-                loginContainer.style.display = "none";
-            }
-        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById("password").addEventListener("keypress", function (event) {
+                if (event.key === "Enter") {
+                    checkLogin();
+                }
+            });
+            document.getElementById("username").addEventListener("keypress", function (event) {
+                if (event.key === "Enter") {
+                    checkLogin();
+                }
+            });
+        });
     </script>
 </head>
 <body>
     <div class="sidebar">
-        <button id="bewerbungen" style="display: none;" onclick="location.href='data.php'">Bewerbungen</button>
         <button class="settings-button" onclick="toggleSettings()">Einstellungen</button>
         <div class="settings">
             <div id="themeContainer" class="theme-container">
                 <button class="theme-toggle" onclick="toggleTheme()">Light/Dark Mode</button>
-                <button id="loginButton" onclick="toggleLogin()" style="display: none;">Login</button>
-            </div>
-            <div id="loginContainer" class="login-container">
-                <input type="text" id="username" placeholder="Username">
-                <input type="password" id="password" placeholder="Password">
-                <button onclick="checkLogin()">Login</button>
-                <p id="error-message" class="error-message">Falscher Benutzername oder Passwort!</p>
             </div>
         </div>
         <h2>Crackz</h2>
+        <div id="login-form" class="login-input">
+            <input type="text" id="username" placeholder="Username">
+            <input type="password" id="password" placeholder="Password">
+            <button onclick="checkLogin()">Login</button>
+            <p id="error-message" class="error-message">Falscher Benutzername oder Passwort!</p>
+        </div>
         <a href="#home">Startseite</a>
         <a href="#about">Über uns</a>
     </div>
-    <div class="content">
+
+    <div class="content hidden-content" id="main-content">
         <h1 id="home">Willkommen auf meiner Website</h1>
         <img src="bild.jpg" alt="Beispielbild">
         <h2 id="about">Über uns</h2>
