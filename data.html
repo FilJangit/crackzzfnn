@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Einfaches Forum</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .container { max-width: 600px; margin: auto; }
+        .post { border: 1px solid #ddd; padding: 10px; margin: 10px 0; }
+        textarea { width: 100%; height: 100px; }
+        button { display: block; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Einfaches Forum</h2>
+        <textarea id="postContent" placeholder="Schreibe einen Beitrag..."></textarea>
+        <button onclick="addPost()">Posten</button>
+        <div id="posts"></div>
+    </div>
+
+    <script>
+        function addPost() {
+            let content = document.getElementById("postContent").value;
+            if (content.trim() === "") return;
+            
+            let postDiv = document.createElement("div");
+            postDiv.classList.add("post");
+            postDiv.textContent = content;
+            
+            document.getElementById("posts").prepend(postDiv);
+            document.getElementById("postContent").value = "";
+        }
+    </script>
+</body>
+</html>
